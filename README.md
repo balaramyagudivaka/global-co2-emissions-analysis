@@ -1,9 +1,25 @@
-# Global CO₂ Emissions Analysis — AMS 597 Group 9
+# 🌍 Global CO₂ Emissions: Drivers, Clusters & Forecasting
 
-Statistical and machine learning analysis of global CO₂ emissions using economic, demographic,
-and energy indicators across a multi-country, multi-year panel dataset.
+![R](https://img.shields.io/badge/R-276DC3?logo=r&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?logo=scikitlearn&logoColor=white)
+![XGBoost](https://img.shields.io/badge/XGBoost-189FDD)
+![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?logo=pytorch&logoColor=white)
+![Hugging Face](https://img.shields.io/badge/Hugging%20Face-FFD21E?logo=huggingface&logoColor=black)
 
-The project addresses four research questions (R1–R4), implemented across R Markdown reports and a Python Jupyter notebook.
+Statistical and machine learning analysis of what drives CO₂ emissions across countries, which emission profiles exist, and how well emissions can be forecast. Built on a panel of **~2,640 country-years (1990–2022)** from Our World in Data.
+
+## ✨ Highlights
+
+- **14 forecasting models benchmarked** on a strict time-based split (train ≤ 2015, validate 2016–2019, test 2020–2022): linear baselines, Random Forest, XGBoost, MLP, LSTM, two pretrained time-series foundation models (**TimesFM**, **PatchTST**) and three ensembles.
+- **Best model: Ridge regression, test R² = 0.989, RMSE = 0.60.** Regularized linear models beat deep learning on this small panel dataset.
+- **Found and fixed data leakage** (target components used as features, rolling means that saw the current year, ensembles picked on test scores). The honest RMSE went up from ~0.38 to ~0.60, and the README documents why.
+- **Clustering** (K-Means, Hierarchical, DBSCAN, GMM) finds three consistent emission profiles (Adjusted Rand Index ≈ 0.7–0.9).
+- **Panel econometrics**: fixed-effects models and an Environmental Kuznets Curve test show energy intensity matters more than GDP alone.
+
+## 👩‍💻 My Role
+
+Group project for AMS 597 (Statistical Computing) at Stony Brook University, Spring 2026. I did most of the analysis and implementation.
 
 ---
 
@@ -11,8 +27,8 @@ The project addresses four research questions (R1–R4), implemented across R Ma
 
 | RQ | Question | Method | File |
 |----|----------|--------|------|
-| **R1** | Which economic and energy-related variables are most strongly associated with CO₂ emissions per capita? | OLS, Ridge, Lasso | `R1-R2_AMS-597-Project.Rmd` |
-| **R2** | Can country-year observations be grouped into meaningful emission clusters? | K-Means, Hierarchical, DBSCAN, GMM | `R1-R2_AMS-597-Project.Rmd` |
+| **R1** | Which economic and energy-related variables are most strongly associated with CO₂ emissions per capita? | OLS, Ridge, Lasso | `CO2_Emissions_Analysis_R1_R2.Rmd` |
+| **R2** | Can country-year observations be grouped into meaningful emission clusters? | K-Means, Hierarchical, DBSCAN, GMM | `CO2_Emissions_Analysis_R1_R2.Rmd` |
 | **R3** | Can future CO₂ emissions be accurately forecast, and do deep learning models outperform classical baselines? | Linear, Ridge, Lasso, ElasticNet, RF, XGBoost, MLP, LSTM, PatchTST, TimesFM, Ensemble (Weighted/Avg/Stacking) | `r3_forecasting.ipynb` |
 | **R4** | Do countries become more energy-efficient as they develop, and how does this affect CO₂ emissions over time? | OLS variants, interaction model, fixed effects panel, EKC test | `R4_Addition.Rmd` |
 
@@ -22,20 +38,19 @@ The project addresses four research questions (R1–R4), implemented across R Ma
 
 ```
 .
-├── R1-R2_AMS-597-Project.Rmd     # R1 regression + R2 clustering (R)
-├── R4_Addition.Rmd               # R4 development-efficiency-emissions analysis (R)
-├── r3_forecasting.ipynb          # R3 forecasting — all ML/DL models (Python)
-├── co2_modeling.ipynb            # Exploratory modeling notebook (Python)
-├── eda_co2.Rmd                   # Standalone EDA report (R)
-├── cleaned_co2_data_20vars.csv   # Cleaned dataset (~2,640 country-year rows)
-├── requirements.txt              # Python dependencies
-├── figures/                      # R1/R2/R4 output figures (r1-*/r2-*/r4-* naming)
+├── CO2_Emissions_Analysis_R1_R2.Rmd  # R1 regression + R2 clustering (R)
+├── r3_forecasting.ipynb              # R3 forecasting — all ML/DL models (Python)
+├── R4_Addition.Rmd                   # R4 development–efficiency–emissions analysis (R)
+├── EDA-AMS-597.Rmd                   # Exploratory data analysis (R)
+├── data_clean.Rmd                    # Data cleaning steps (R)
+├── cleaned_co2_data_20vars.csv       # Cleaned dataset (~2,640 country-year rows)
+├── dataset.md                        # Dataset description
+├── requirements.txt                  # Python dependencies
+├── figures/                          # R1/R2/R4 output figures (r1-*/r2-*/r4-* naming)
 ├── output_r3/
-│   ├── figures/                  # R3 model prediction and comparison plots
-│   └── tables/                   # R3 metrics CSV files
-├── output/figures/               # co2_modeling.ipynb output figures
-├── Fix.md                        # Project planning notes
-└── olds/                         # Archived earlier versions
+│   ├── figures/                      # R3 model prediction and comparison plots
+│   └── tables/                       # R3 metrics CSV files
+└── reports/                          # Final report, R4 report and presentation (PDF/PPTX)
 ```
 
 ---
@@ -45,7 +60,7 @@ The project addresses four research questions (R1–R4), implemented across R Ma
 - **Source:** [Our World in Data — CO₂ and Greenhouse Gas Emissions](https://github.com/owid/co2-data)
 - **Cleaned file:** `cleaned_co2_data_20vars.csv` — years ≥ 1990, valid ISO codes, complete cases only
 - **Dimensions:** ~2,640 country-year observations × 20 columns
-- **Target (R1/R2):** `co2_per_capita` | **Target (R3):** `co2_per_capita`
+- **Target:** `co2_per_capita`
 - **Key predictors:** `gdp`, `population`, `energy_per_capita`, `total_ghg`, `coal_co2`, `oil_co2`, `gas_co2`, `methane`, and others
 
 ---
@@ -56,6 +71,7 @@ The project addresses four research questions (R1–R4), implemented across R Ma
 
 ```bash
 pip install -r requirements.txt
+jupyter notebook r3_forecasting.ipynb
 ```
 
 For **RTX 50-series (Blackwell / sm_120)** GPU support:
@@ -64,17 +80,18 @@ For **RTX 50-series (Blackwell / sm_120)** GPU support:
 pip install --upgrade torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
 ```
 
-### R (R1/R2 + EDA)
+### R (R1, R2, R4 and EDA)
 
 ```r
 install.packages(c(
-  "tidyverse", "glmnet", "caret", "factoextra", "cluster",
-  "corrplot", "car", "knitr", "dbscan", "mclust", "gridExtra"
+  "tidyverse", "glmnet", "caret", "factoextra", "cluster", "corrplot", "car",
+  "knitr", "dbscan", "mclust", "gridExtra", "plm", "broom", "scales"
 ))
 ```
 
 ```bash
-Rscript -e "rmarkdown::render('R1-R2_AMS-597-Project.Rmd')"
+Rscript -e "rmarkdown::render('CO2_Emissions_Analysis_R1_R2.Rmd')"
+Rscript -e "rmarkdown::render('R4_Addition.Rmd')"
 ```
 
 ---
@@ -403,4 +420,5 @@ Four-panel standard regression diagnostic plot for Model 2 (`co2 ~ gdp + populat
 
 ## Authors
 
-Group 9 — AMS 597 Statistical Computing, Spring 2026
+Group 9 — AMS 597 Statistical Computing, Stony Brook University, Spring 2026.
+Maintained by [Bala Ramya Gudivaka](https://www.linkedin.com/in/bala-ramya-gudivaka-54731424b/).
