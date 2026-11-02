@@ -17,9 +17,9 @@ Statistical and machine learning analysis of what drives CO₂ emissions across 
 - **Clustering** (K-Means, Hierarchical, DBSCAN, GMM) finds three consistent emission profiles (Adjusted Rand Index ≈ 0.7–0.9).
 - **Panel econometrics**: fixed-effects models and an Environmental Kuznets Curve test show energy intensity matters more than GDP alone.
 
-## 👩‍💻 My Role
+## 👥 Team
 
-Group project for AMS 597 (Statistical Computing) at Stony Brook University, Spring 2026. I did most of the analysis and implementation.
+Group 9 project for AMS 597 (Statistical Computing) at Stony Brook University, Spring 2026: Aviral Chanchal, Meet Naresh Brahmbhatt, Thai Toan Tran, Sai Sony Malapati and Bala Ramya Gudivaka.
 
 ---
 
